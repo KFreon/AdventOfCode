@@ -3,7 +3,9 @@
     .Select(x => new { name = x.Name, type = Activator.CreateInstance(x) as BaseDay })
     .OrderBy(x => x.name);
 
-foreach (var day in days)
-    day.type!.Execute();
+//foreach (var day in days)
+//    day.type!.Execute();
+
+days.Last().type.Execute();
 
 //BenchmarkRunner.Run<Day6>();
