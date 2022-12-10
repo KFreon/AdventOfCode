@@ -12,9 +12,8 @@
 
     public override void Execute()
     {
-        var lines = File.ReadAllLines(InputFile);
-        var numberOfDistinctLocations = CountNumberOfDistinctLocationsOccupiedByTail(lines);
-        var numberOfDistinctLocations_chain = CountDistinctLocationsForTailInChain(lines);
+        var numberOfDistinctLocations = CountNumberOfDistinctLocationsOccupiedByTail(lines.Value);
+        var numberOfDistinctLocations_chain = CountDistinctLocationsForTailInChain(lines.Value);
 
         WriteOutput(numberOfDistinctLocations, numberOfDistinctLocations_chain);
     }

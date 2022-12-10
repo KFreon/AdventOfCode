@@ -2,12 +2,10 @@ public class Day2 : BaseDay
 {
     public override void Execute()
     {
-        var lines = File.ReadLines(InputFile);
-
         var player1Map = new List<char> { 'A', 'B', 'C' };
         var player2Map = new List<char> { 'X', 'Y', 'Z' };  // First round, x = rock, y = paper, etc
 
-        var part1 = lines
+        var part1 = lines.Value
         .Select(x => new
         {
             player1 = player1Map.IndexOf(x[0]),
@@ -33,7 +31,7 @@ public class Day2 : BaseDay
     .Sum(x => x.score);
 
         // second round X = lose, Y = tie, Z = win
-        var part2 = lines
+        var part2 = lines.Value
         .Select(x => new { player1 = player1Map.IndexOf(x[0]), endState = player2Map.IndexOf(x[2]) })
         .Select(x =>
         {

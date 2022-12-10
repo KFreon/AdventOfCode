@@ -23,12 +23,10 @@ public class Day7 : BaseDay
 
     public override void Execute()
     {
-        var lines = File.ReadAllLines(InputFile);
-
         var current = new Item("/", null, 0, new List<Item>());
         var root = current;
 
-        foreach(var line in lines)
+        foreach(var line in lines.Value)
         {
             var bits = line.Trim('$').Split(' ', StringSplitOptions.RemoveEmptyEntries);
             var command = bits[0];

@@ -2,6 +2,7 @@
 {
     public string DayIndex => GetType().Name.Replace("Day", "");
     public string InputFile => Config.GetDayInput(DayIndex);
+    public Lazy<string[]> lines => new Lazy<string[]>(() => File.ReadAllLines(InputFile));
     public abstract void Execute();
 
     public void WriteOutput<T>(T part1Output, T part2Output = default, string prefix = "")

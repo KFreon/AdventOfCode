@@ -10,14 +10,12 @@ public class Day4 : BaseDay
 
     public override void Execute()
     {
-        var lines = File.ReadLines(InputFile);
-
         Func<string, MyRange> getRange = (string stringRange) => {
             var bits = stringRange.Split('-').Select(x => int.Parse(x)).ToArray();
             return new MyRange(bits[0], bits[1]);
         };
 
-        var part1 = lines
+        var part1 = lines.Value
             .Select(l => l.Split(','))
             .Select(stringRanges =>
             {
@@ -30,7 +28,7 @@ public class Day4 : BaseDay
             .Count();
 
         // Pt2
-        var part2 = lines
+        var part2 = lines.Value
             .Select(l => l.Split(','))
             .Select(stringRanges =>
             {

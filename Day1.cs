@@ -2,12 +2,11 @@ public class Day1 : BaseDay
 {
     public override void Execute()
     {
-        var lines = File.ReadLines(InputFile);
         var elves = new List<List<int>>();
 
         var currentElf = new List<int>();
 
-        foreach (var line in lines)
+        foreach (var line in lines.Value)
         {
             if (line.Length == 0)
             {

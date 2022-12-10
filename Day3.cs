@@ -3,10 +3,7 @@ public class Day3 : BaseDay
     public override void Execute()
     {
         // (((int)'Z') - 96) + 31 + 27
-
-        var lines = File.ReadLines(InputFile);
-
-        var part1 = lines.Select(line =>
+        var part1 = lines.Value.Select(line =>
         {
             var priorities = line.Select(c =>
             {
@@ -28,7 +25,7 @@ public class Day3 : BaseDay
 
 
         // Part2
-        var priorities = lines.Select(
+        var priorities = lines.Value.Select(
             line => line.Select(c =>
             {
                 int priority = c - 96;

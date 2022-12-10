@@ -5,9 +5,7 @@ public class Day5 : BaseDay
 {
     public override void Execute()
     {
-        string[] lines = File.ReadAllLines(InputFile);
-
-        var originalStacks = ParseStacks(lines);
+        var originalStacks = ParseStacks(lines.Value);
 
         var stacks = originalStacks.Select(x => x.ToList())
             .ToArray();
@@ -15,7 +13,7 @@ public class Day5 : BaseDay
         var originalTotalNumberOfContainers = stacks.Sum(x => x.Count);
 
         // Parse instructions
-        var instructions = lines.Skip(stacks.Length)
+        var instructions = lines.Value.Skip(stacks.Length)
             .Where(x => !string.IsNullOrEmpty(x))
             .Select(x => new Instruction(x))
             .ToList();

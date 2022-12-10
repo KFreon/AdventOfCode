@@ -6,10 +6,8 @@ public class Day8 : BaseDay
 
     public override void Execute()
     {
-        var lines = File.ReadAllLines(InputFile);
-
-        var height = lines.Length;
-        var width = lines[0].Length;
+        var height = lines.Value.Length;
+        var width = lines.Value[0].Length;
 
         var trees = new Tree[height][];
 
@@ -21,7 +19,7 @@ public class Day8 : BaseDay
                 var isEdge = row == 0 || row == height - 1
                     || column == 0 || column == width - 1;
 
-                var currentTree = lines[row][column].ToString();
+                var currentTree = lines.Value[row][column].ToString();
                 if (trees[row] == default)
                 {
                     trees[row] = new Tree[width];
