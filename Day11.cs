@@ -51,7 +51,7 @@
             };
         }
 
-        public void TakeTurn(Monkey[] allMonkeys, bool areWeWorried, ulong round)
+        public void TakeTurn(Monkey[] allMonkeys, bool areWeWorried, ulong allTestValues)
         {
             if (!Items.Any())
             {
@@ -62,11 +62,8 @@
             {
                 var newWorryLevelForItem = Inspect_AndGetNewWorryLevelForItem(item);
                 ulong relief = areWeWorried 
-                    ? newWorryLevelForItem 
+                    ? newWorryLevelForItem % allTestValues
                     : (ulong)Math.Round(newWorryLevelForItem / 3d, MidpointRounding.ToZero);
-
-                var thing = relief / round;
-                relief = (ulong)Math.Round(thing);
 
                 var panicThrow = Test(relief);
                 allMonkeys[panicThrow ? TrueTarget : FalseTarget].Items.Add(relief);
@@ -77,30 +74,22 @@
 
     public override void Execute()
     {
-        //var monkeyBusiness = GetMonkeyBusiness(lines.Value, false, 20);
+        var monkeyBusiness = GetMonkeyBusiness(lines.Value, false, 20);
         var fear = GetMonkeyBusiness(lines.Value, true, 10_000);
 
-        WriteOutput(fear);
+        WriteOutput(monkeyBusiness, fear);
     }
 
     private static ulong GetMonkeyBusiness(string[] lines, bool areWeWorried, int numberOfRounds)
     {
         var monkeys = lines.Chunk(7).Select(x => new Monkey(x)).ToArray();
-
-        var roundCountsOfInterest = new[] { 1, 20, 1000, 2000 };
-
-        var things = new List<(int Index, ulong ItemInspectionCount)[]>();
+        var allTestValues = monkeys.Aggregate(1UL, (agg, x) => x.TestDivideAmount * agg);
 
         for (int round = 0; round < numberOfRounds; round++)
         {
-            if (roundCountsOfInterest.Contains(round))
-            {
-                things.Add(monkeys.Select((x, i) => (Index: i, x.ItemInspectionCount)).ToArray());
-            }
-
             for (int monkey = 0; monkey < monkeys.Length; monkey++)
             {
-                monkeys[monkey].TakeTurn(monkeys, areWeWorried, (ulong)round);
+                monkeys[monkey].TakeTurn(monkeys, areWeWorried, allTestValues);
             }
         }
 
