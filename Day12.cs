@@ -1,6 +1,4 @@
-﻿using System.Drawing;
-
-public class Day12 : BaseDay
+﻿public class Day12 : BaseDay
 {
     enum Direction
     {
