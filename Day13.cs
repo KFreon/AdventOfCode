@@ -22,10 +22,14 @@ public class Day13 : BaseDay
             .Select(x => new Pair(x[0], x[1]));
 
         var count = 0;
+        var inOrders = new List<int>();
         foreach (var pair in pairs)
         {
             var isInOrder = ProcessPair(pair);
-            Console.WriteLine($"{count + 1}: {isInOrder}");
+            var index = count + 1;
+
+            Console.WriteLine($"{index}: {isInOrder}");
+            if (isInOrder) inOrders.Add(index);
             count++;
 
             //var left = TrimLine(pair.Line1);
@@ -34,6 +38,8 @@ public class Day13 : BaseDay
             //var inCorrectOrder = DoTHings(left, right);
             //Console.WriteLine(inCorrectOrder);
         }
+
+        WriteOutput(inOrders.Sum());
     }
 
     private static bool ProcessPair(Pair pair)
