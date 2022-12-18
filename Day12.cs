@@ -24,18 +24,22 @@
         }
     }
 
-    private Point[][] map;
-    Point start, goal;
-    int mapHeight, mapWidth;
-
-    private HashSet<Point> currentPoints = new HashSet<Point>();
-    private HashSet<Point> nextPoints = new HashSet<Point>();
+    
 
     public override void Execute()
     {
-        (map, start, goal) = ParseMap(lines.Value);
-        mapHeight = map.Length;
-        mapWidth = map[0].Length;
+        //var part1 = RunPart1(lines.Value);
+        var part2 = RunPart2(lines.Value);
+
+        WriteOutput(0, part2);
+    }
+
+    private static int RunPart1(string[] lines)
+    {
+        var (map, start, goal) = ParseMap(lines);
+
+        var currentPoints = new HashSet<Point>();
+        var nextPoints = new HashSet<Point>();
 
         var moveCount = 0;
 
@@ -43,12 +47,45 @@
 
         while (!map[goal.Y][goal.X].Visited)
         {
-            foreach(var point in currentPoints)
+            foreach (var point in currentPoints)
             {
-                foreach (var item in GetNextPoints(map, point))
+                foreach (var item in GetNextPoints(map, point, false))
                     nextPoints.Add(item);
                 point.Visited = true;
             }
+            currentPoints.Clear();
+            foreach (var pt in nextPoints) currentPoints.Add(pt);
+            nextPoints.Clear();
+            //WriteMap(map);
+            moveCount++;
+        }
+
+        return moveCount - 1;
+    }
+
+    private static int RunPart2(string[] lines)
+    {
+        var (map, _, start) = ParseMap(lines);
+        var currentPoints = new HashSet<Point>();
+        var nextPoints = new HashSet<Point>();
+        var moveCount = 0;
+
+        currentPoints.Add(start);
+
+        while (true)
+        {
+            if (currentPoints.Any(x => x.Height == (int)'a'))
+            {
+                break;
+            }
+
+            foreach (var point in currentPoints)
+            {
+                foreach (var item in GetNextPoints(map, point, true))
+                    nextPoints.Add(item);
+                point.Visited = true;
+            }
+
             currentPoints.Clear();
             foreach (var pt in nextPoints) currentPoints.Add(pt);
             nextPoints.Clear();
@@ -56,7 +93,7 @@
             moveCount++;
         }
 
-        WriteOutput(moveCount - 1);
+        return moveCount;
     }
 
     private static void WriteMap(Point[][] map)
@@ -73,38 +110,41 @@
     }
 
 
-    private static List<Point> GetNextPoints(Point[][] map, Point point)
+    private static List<Point> GetNextPoints(Point[][] map, Point point, bool part2)
     {
         var nextPoints = new List<Point>();
 
         // up
         if (point.Y > 0)
-            MaybeAddPoint(map, point, 0, -1, nextPoints);
+            MaybeAddPoint(map, point, 0, -1, nextPoints, part2);
 
         // down
         if (point.Y < map.Length -1)
-            MaybeAddPoint(map, point, 0, 1, nextPoints);
+            MaybeAddPoint(map, point, 0, 1, nextPoints, part2);
 
         // left
         if (point.X > 0)
-            MaybeAddPoint(map, point, -1, 0, nextPoints);
+            MaybeAddPoint(map, point, -1, 0, nextPoints, part2);
 
         // right
         if (point.X < map[0].Length-1)
-            MaybeAddPoint(map, point, 1, 0, nextPoints);
+            MaybeAddPoint(map, point, 1, 0, nextPoints, part2);
 
         return nextPoints;
     }
 
-    private static void MaybeAddPoint(Point[][] map, Point point, int stepX, int stepY, List<Point> nextPoints)
+    private static void MaybeAddPoint(Point[][] map, Point point, int stepX, int stepY, List<Point> nextPoints, bool part2)
     {
         var next = map[point.Y + stepY][point.X + stepX];
-        if (!next.Visited && CanVisit(next, point.Height)) nextPoints.Add(next);
+        if (!next.Visited && CanVisit(next, point.Height, part2)) nextPoints.Add(next);
     }
 
-    private static bool CanVisit(Point point, int currentHeight)
+    private static bool CanVisit(Point point, int currentHeight, bool part2)
     {
-        return Math.Abs(point.Height - currentHeight) <= 1;
+        var diff = point.Height - currentHeight;
+        return part2 
+            ? diff >= -1
+            : diff <= 1;
     }
 
     private static (Point[][] Map, Point Start, Point Goal) ParseMap(string[] lines)
