@@ -6,7 +6,6 @@
 //foreach (var day in days)
 //    day.type!.Execute();
 
-new Day12().Execute();
-//days.Last().type.Execute();
+days.Last().type.Execute();
 
 //BenchmarkRunner.Run<Day6>();
