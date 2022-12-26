@@ -1,8 +1,4 @@
-﻿using System.Runtime.InteropServices;
-using System.Security.Cryptography.X509Certificates;
-using static System.Collections.Specialized.BitVector32;
-
-public class Day14 : BaseDay
+﻿public class Day14 : BaseDay
 {
     record Point(int Row, int Column, bool IsFilled, bool IsRock = false, bool IsFloor = false);
     const int Width = 1000;
