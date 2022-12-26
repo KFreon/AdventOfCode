@@ -55,12 +55,11 @@ public class Day13 : BaseDay
     {
         for (int i = 0; i < left.Ints.Count; i++)
         {
-
             var leftInt = left.Ints[i];
             if (right.Ints.Count <= i) return false;
 
             var rightInt = right.Ints[i];
-            
+
             var isLeftAnInt = leftInt != -1;
             var isRightAnInt = rightInt != -1;
 
@@ -70,19 +69,22 @@ public class Day13 : BaseDay
                 if (leftInt > rightInt) return false;
 
                 if (onlyFirst) return true;
-            } 
+            }
             else if ((!isLeftAnInt && isRightAnInt) || (isLeftAnInt && !isRightAnInt))
             {
                 // One is an int and the other isn't
                 Item newLeft = isLeftAnInt ? new Item { Items = new List<Item?> { null }, Ints = new List<int> { leftInt } } : left.Items[i];
                 Item newRight = isRightAnInt ? new Item { Items = new List<Item?> { null }, Ints = new List<int> { rightInt } } : right.Items[i];
                 return DoPair(newLeft, newRight, true);
-            } 
+            }
             else
             {
-                var results = new List<bool>();
                 // both lists
-                for(int j=0;j<left.Items.Count;j++)
+                var results = new List<bool>();
+
+                if (left.Items.Count > right.Items.Count) return false;
+
+                for (int j = 0; j < left.Items.Count; j++)
                 {
                     results.Add(DoPair(left.Items[i], right.Items[i], false));
                 }
@@ -97,7 +99,7 @@ public class Day13 : BaseDay
     {
         var item = new Item();
         var index = 0;
-        while(index < line.Length)
+        while (index < line.Length)
         {
             var c = line[index];
             if (c == '[')
@@ -110,9 +112,10 @@ public class Day13 : BaseDay
             }
             else if (c != ',' && c != ']')
             {
-                item.Ints.Add(int.Parse("" + c));
+                var section = new string(line.Skip(index).TakeWhile(x => x != ']' && x != ',').ToArray());
+                item.Ints.Add(int.Parse(section));
                 item.Items.Add(null);  //space it out
-                index++; // Only handling one int
+                index += section.Length;
             }
             else
             {
@@ -143,7 +146,7 @@ public class Day13 : BaseDay
         }
 
         // Loop over each list
-        for (int i=0;i<left.Length;i++) 
+        for (int i = 0; i < left.Length; i++)
         {
             var isLeftList = left[i].Contains(']');
             var isRightList = right[i].Contains(']');
